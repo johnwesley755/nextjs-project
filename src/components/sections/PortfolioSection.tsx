@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import Image from "next/image";
 import { PROJECTS_DATA, PORTFOLIO_HEADER } from "@/data/projects";
 import { ProjectCard } from "../portfolio/ProjectCard";
 
@@ -10,6 +11,18 @@ export function PortfolioSection() {
       id="work"
       className="relative w-full bg-[#101010] text-[#F2F0E9] py-20 sm:py-28 lg:py-36 overflow-hidden border-b border-[#292929]"
     >
+      {/* Ambient Architectural Framework Texture */}
+      <div className="absolute inset-0 pointer-events-none select-none overflow-hidden -z-0 opacity-15" aria-hidden="true">
+        <Image
+          src="/images/backgrounds/portfolio-ambient-bg.webp"
+          alt=""
+          fill
+          sizes="100vw"
+          className="object-cover contrast-125 brightness-75"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#101010] via-transparent to-[#101010] opacity-80" />
+      </div>
+
       {/* Scroll-Triggered Section Entrance Laser Transition */}
       <div
         id="portfolio-transition-divider"
@@ -38,7 +51,7 @@ export function PortfolioSection() {
         </div>
 
         {/* Asymmetrical Editorial Project Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-x-10 gap-y-16 sm:gap-y-20 lg:gap-y-24 items-start">
+        <div className="flex flex-col lg:grid lg:grid-cols-12 gap-x-10 gap-y-16 sm:gap-y-20 lg:gap-y-24 items-start w-full">
           {PROJECTS_DATA.map((project) => (
             <ProjectCard key={project.id} project={project} />
           ))}

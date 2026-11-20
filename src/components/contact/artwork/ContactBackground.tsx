@@ -4,6 +4,7 @@ import React from "react";
 import { TechnicalGrid } from "./TechnicalGrid";
 import { OutlineWordmark } from "./OutlineWordmark";
 import { ArchitecturalIllustration } from "./ArchitecturalIllustration";
+import { BackgroundVideo } from "@/components/ui/BackgroundVideo";
 
 export function ContactBackground() {
   return (
@@ -11,6 +12,14 @@ export function ContactBackground() {
       className="absolute inset-0 pointer-events-none select-none overflow-hidden z-0"
       aria-hidden="true"
     >
+      {/* Layer 0: Real Architectural Ambient Video Loop */}
+      <BackgroundVideo
+        srcMp4="/videos/contact-ambient-loop.mp4"
+        poster="/images/backgrounds/contact-ambient-poster.webp"
+        opacity="opacity-45"
+        scrimClassName="bg-gradient-to-t from-[#101010] via-[#101010]/60 to-[#101010]"
+      />
+
       {/* Layer 1: Technical Construction Grid & Coordinate Matrix */}
       <TechnicalGrid />
 

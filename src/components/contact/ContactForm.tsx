@@ -1,23 +1,31 @@
 "use client";
 
 import React, { useState } from "react";
-import { ArrowUpRight, CheckCircle2, AlertCircle, Loader2 } from "lucide-react";
+import { ArrowUpRight, CheckCircle2, AlertCircle, Loader2, Sparkles, Send } from "lucide-react";
 import { validateContactForm, ValidationErrors } from "@/lib/validation";
 import { ContactField } from "./ContactField";
 
 const PROJECT_TYPES = [
-  "Brand identity",
-  "Website / digital experience",
-  "Product design",
-  "Creative development",
-  "Something else",
+  "Brand Identity",
+  "Digital Experiences",
+  "Product Design",
+  "Creative Development",
+  "Full-Stack Ecosystem",
+];
+
+const BUDGET_RANGES = [
+  "$10k – $25k",
+  "$25k – $50k",
+  "$50k – $100k",
+  "$100k+",
 ];
 
 export function ContactForm() {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
-    projectType: "Brand identity",
+    projectType: "Brand Identity",
+    budget: "$25k – $50k",
     message: "",
     honeypot: "",
   });
@@ -40,6 +48,10 @@ export function ContactForm() {
 
   const handleTypeSelect = (type: string) => {
     setFormData((prev) => ({ ...prev, projectType: type }));
+  };
+
+  const handleBudgetSelect = (budget: string) => {
+    setFormData((prev) => ({ ...prev, budget }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -80,7 +92,8 @@ export function ContactForm() {
       setFormData({
         name: "",
         email: "",
-        projectType: "Brand identity",
+        projectType: "Brand Identity",
+        budget: "$25k – $50k",
         message: "",
         honeypot: "",
       });
@@ -101,91 +114,128 @@ export function ContactForm() {
   return (
     <div
       id="contact-form-container"
-      className="relative w-full text-[#F2F0E9]"
+      className="relative w-full max-w-4xl mx-auto text-[#F2F0E9]"
     >
-      {/* Success Notification State */}
+      {/* Success Notification Card */}
       {status === "success" ? (
         <div
           role="status"
           aria-live="polite"
-          className="p-8 sm:p-12 bg-[#181818]/90 border border-[#292929] space-y-4 max-w-2xl"
+          className="p-8 sm:p-14 bg-[#141414] border border-[#333333] rounded-sm space-y-6 text-center max-w-2xl mx-auto shadow-2xl"
         >
-          <div className="flex items-center gap-3 text-[#D7FF3F]">
-            <CheckCircle2 className="w-6 h-6 shrink-0" />
-            <h4 className="font-bebas text-3xl tracking-wider uppercase text-[#F2F0E9]">
-              BRIEF TRANSMITTED
-            </h4>
+          <div className="w-16 h-16 rounded-full bg-[#D7FF3F]/10 border border-[#D7FF3F]/30 flex items-center justify-center mx-auto text-[#D7FF3F]">
+            <CheckCircle2 className="w-8 h-8" />
           </div>
-          <p className="font-grotesk text-base sm:text-lg text-[#F2F0E9]/80 leading-relaxed">
-            {serverMessage}
-          </p>
-          <p className="font-grotesk text-xs text-[#77776F]">
-            Ref ID // {referenceId} · Response window: 1–2 business days
-          </p>
+          <div className="space-y-3">
+            <h4 className="font-bebas text-4xl sm:text-5xl tracking-wide uppercase text-[#F2F0E9]">
+              INQUIRY RECEIVED
+            </h4>
+            <p className="font-grotesk text-lg text-[#F2F0E9]/90 leading-relaxed max-w-lg mx-auto">
+              {serverMessage}
+            </p>
+          </div>
+          <div className="pt-2 font-grotesk text-sm text-[#A8A7A1]">
+            Reference Code: <span className="text-[#D7FF3F] font-semibold">{referenceId}</span> · Typical turnaround: 24–48 hours
+          </div>
           <div className="pt-4">
             <button
               type="button"
               onClick={handleReset}
-              className="inline-flex items-center gap-2 px-6 py-3 bg-[#F2F0E9] hover:bg-[#D7FF3F] text-[#101010] font-grotesk font-semibold text-xs tracking-wide transition-colors cursor-pointer"
+              className="inline-flex items-center gap-2 px-8 py-4 bg-[#F2F0E9] hover:bg-[#D7FF3F] text-[#101010] font-grotesk font-semibold text-sm tracking-wider uppercase transition-colors cursor-pointer rounded-xs"
             >
-              <span>Send another message</span>
+              <span>Submit Another Brief</span>
               <ArrowUpRight className="w-4 h-4" />
             </button>
           </div>
         </div>
       ) : (
-        <form onSubmit={handleSubmit} noValidate>
-          {/* Honeypot anti-spam field */}
-          <div className="hidden" aria-hidden="true">
-            <label htmlFor="contact_hp_website">Website</label>
-            <input
-              id="contact_hp_website"
-              type="text"
-              name="honeypot"
-              tabIndex={-1}
-              autoComplete="off"
-              value={formData.honeypot}
-              onChange={handleChange}
-            />
-          </div>
-
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
-            {/* Form Left Side (Col 1-4): Title & Context */}
-            <div className="lg:col-span-4 space-y-4">
-              <h3 className="contact-form-item font-bebas text-4xl sm:text-5xl lg:text-6xl tracking-tight leading-[0.9] text-[#F2F0E9] uppercase">
-                TELL US WHAT <br />
-                YOU&apos;RE THINKING.
+        /* High-Visibility, Clean Form Card */
+        <div className="relative rounded-sm border border-[#333333] bg-[#141414]/95 backdrop-blur-xl p-7 sm:p-12 lg:p-14 shadow-2xl">
+          {/* Form Header */}
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-8 mb-8 border-b border-[#292929] gap-4">
+            <div>
+              <div className="flex items-center gap-2 font-grotesk text-xs sm:text-sm text-[#D7FF3F] font-semibold uppercase tracking-wider mb-2">
+                <span>Direct Commission</span>
+              </div>
+              <h3 className="font-bebas text-4xl sm:text-5xl text-[#F2F0E9] uppercase tracking-wide leading-none">
+                PROJECT INTAKE
               </h3>
-              <p className="contact-form-item font-grotesk text-sm sm:text-base text-[#77776F] leading-relaxed">
-                A few details are all we need to get started. We review every brief thoroughly before responding.
-              </p>
             </div>
 
-            {/* Form Right Side (Col 5-12): Input Fields Ledger */}
-            <div className="lg:col-span-8 space-y-8 lg:border-l lg:border-[#292929] lg:pl-12 xl:pl-16">
-              {/* Server Error Alert */}
-              {status === "error" && (
-                <div
-                  role="alert"
-                  className="p-4 bg-red-950/30 border border-red-500/50 text-red-200 flex items-start gap-3"
-                >
-                  <AlertCircle className="w-5 h-5 text-red-400 shrink-0 mt-0.5" />
-                  <div className="text-sm font-grotesk">
-                    <span className="font-bold block">Transmission Alert:</span>
-                    {serverMessage}
-                  </div>
-                </div>
-              )}
+            <div className="flex items-center gap-2.5 font-grotesk text-sm text-[#A8A7A1]">
+              <span className="w-2.5 h-2.5 rounded-full bg-[#D7FF3F] animate-pulse" />
+              <span>Direct studio commission</span>
+            </div>
+          </div>
 
-              {/* 2-Column Row: Name & Email */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
+          <form onSubmit={handleSubmit} noValidate className="space-y-9">
+            {/* Honeypot anti-spam field */}
+            <div className="hidden" aria-hidden="true">
+              <label htmlFor="contact_hp_website">Website</label>
+              <input
+                id="contact_hp_website"
+                type="text"
+                name="honeypot"
+                tabIndex={-1}
+                autoComplete="off"
+                value={formData.honeypot}
+                onChange={handleChange}
+              />
+            </div>
+
+            {/* Server Error Alert */}
+            {status === "error" && (
+              <div
+                role="alert"
+                className="p-4 bg-red-950/40 border border-red-500/60 text-red-200 rounded-xs flex items-start gap-3"
+              >
+                <AlertCircle className="w-5 h-5 text-red-400 shrink-0 mt-0.5" />
+                <div className="text-base font-grotesk">
+                  <span className="font-bold block">Transmission Alert:</span>
+                  {serverMessage}
+                </div>
+              </div>
+            )}
+
+            {/* 1. Project Discipline Selection */}
+            <div className="space-y-3.5">
+              <label className="block font-grotesk text-sm sm:text-base text-[#F2F0E9] font-medium tracking-wide">
+                1. Project Discipline <span className="text-[#D7FF3F] font-bold">*</span>
+              </label>
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
+                {PROJECT_TYPES.map((type) => {
+                  const isSelected = formData.projectType === type;
+                  return (
+                    <button
+                      key={type}
+                      type="button"
+                      onClick={() => handleTypeSelect(type)}
+                      className={`px-4 py-3 text-sm font-grotesk tracking-wide rounded-sm border text-left sm:text-center transition-all duration-200 cursor-pointer ${
+                        isSelected
+                          ? "bg-[#D7FF3F] text-[#101010] border-[#D7FF3F] font-bold shadow-[0_0_20px_rgba(215,255,63,0.3)]"
+                          : "bg-[#181818] text-[#C4C3BE] hover:text-[#F2F0E9] border-[#333333] hover:border-[#555555]"
+                      }`}
+                    >
+                      {type}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* 2. Client Identity (Name & Email) */}
+            <div className="space-y-3.5">
+              <span className="block font-grotesk text-sm sm:text-base text-[#F2F0E9] font-medium tracking-wide">
+                2. Your Contact Information
+              </span>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 <ContactField
                   id="contact_name"
                   name="name"
-                  label="Your name"
-                  index="01"
+                  label="Name / Company"
                   required
-                  placeholder="How should we call you?"
+                  placeholder="e.g. John Wesley"
+                  autoComplete="name"
                   value={formData.name}
                   error={errors.name}
                   disabled={status === "submitting"}
@@ -196,86 +246,88 @@ export function ContactForm() {
                   id="contact_email"
                   name="email"
                   type="email"
-                  label="Email address"
-                  index="02"
+                  label="Email Address"
                   required
-                  placeholder="you@example.com"
+                  placeholder="e.g. john@company.com"
+                  autoComplete="email"
                   value={formData.email}
                   error={errors.email}
                   disabled={status === "submitting"}
                   onChange={handleChange}
                 />
               </div>
+            </div>
 
-              {/* Project Type Selector */}
-              <div className="contact-form-item space-y-3 pt-2">
-                <div className="flex items-baseline justify-between font-grotesk text-xs tracking-wide text-[#77776F]">
-                  <span className="text-[#F2F0E9]/80 font-medium">Project type</span>
-                </div>
-                <div className="flex flex-wrap gap-2.5">
-                  {PROJECT_TYPES.map((type) => {
-                    const isSelected = formData.projectType === type;
-                    return (
-                      <button
-                        key={type}
-                        type="button"
-                        onClick={() => handleTypeSelect(type)}
-                        className={`px-3.5 py-1.5 text-xs font-grotesk tracking-wide transition-colors duration-150 border cursor-pointer ${
-                          isSelected
-                            ? "bg-[#D7FF3F] text-[#101010] border-[#D7FF3F] font-semibold shadow-[0_0_15px_rgba(215,255,63,0.25)]"
-                            : "bg-transparent text-[#77776F] hover:text-[#F2F0E9] border-[#292929] hover:border-[#77776F]"
-                        }`}
-                      >
-                        {type}
-                      </button>
-                    );
-                  })}
-                </div>
+            {/* 3. Estimated Scope / Budget */}
+            <div className="space-y-3.5">
+              <label className="block font-grotesk text-sm sm:text-base text-[#F2F0E9] font-medium tracking-wide">
+                3. Estimated Investment Range (USD)
+              </label>
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                {BUDGET_RANGES.map((b) => {
+                  const isSelected = formData.budget === b;
+                  return (
+                    <button
+                      key={b}
+                      type="button"
+                      onClick={() => handleBudgetSelect(b)}
+                      className={`px-4 py-3 text-sm font-grotesk tracking-wide rounded-sm border text-center transition-all duration-200 cursor-pointer ${
+                        isSelected
+                          ? "bg-[#F2F0E9] text-[#101010] border-[#F2F0E9] font-bold shadow-md"
+                          : "bg-[#181818] text-[#A8A7A1] hover:text-[#F2F0E9] border-[#333333] hover:border-[#555555]"
+                      }`}
+                    >
+                      {b}
+                    </button>
+                  );
+                })}
               </div>
+            </div>
 
-              {/* Message Details */}
+            {/* 4. Project Vision & Goals */}
+            <div className="space-y-3.5">
               <ContactField
                 id="contact_message"
                 name="message"
                 type="textarea"
-                label="Tell us about your idea"
-                index="04"
+                label="4. Tell Us About Your Project"
                 required
-                rows={4}
-                placeholder="Tell us a little about your idea, scope, timeline or goals..."
+                rows={5}
+                placeholder="Briefly describe your objectives, deliverables, timeline, or anything unique you have in mind..."
                 value={formData.message}
                 error={errors.message}
                 disabled={status === "submitting"}
                 onChange={handleChange}
               />
+            </div>
 
-              {/* Submit CTA */}
-              <div className="contact-form-item pt-4 border-t border-[#292929] flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-6">
-                <button
-                  type="submit"
-                  disabled={status === "submitting"}
-                  className="group relative inline-flex items-center justify-center gap-3 px-10 py-4 bg-[#F2F0E9] hover:bg-[#D7FF3F] text-[#101010] font-grotesk font-semibold text-xs tracking-wider transition-colors duration-200 cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed shadow-[0_5px_20px_rgba(0,0,0,0.5)] active:translate-y-0.5"
-                >
-                  {status === "submitting" ? (
-                    <>
-                      <Loader2 className="w-4 h-4 animate-spin text-[#101010]" />
-                      <span>Transmitting...</span>
-                    </>
-                  ) : (
-                    <>
-                      <span>Send your message</span>
-                      <ArrowUpRight className="w-4 h-4 text-[#101010] group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
-                    </>
-                  )}
-                </button>
+            {/* Submission Section */}
+            <div className="pt-6 border-t border-[#292929] flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-6">
+              <button
+                type="submit"
+                disabled={status === "submitting"}
+                className="group relative inline-flex items-center justify-center gap-3 px-10 py-4.5 bg-[#D7FF3F] hover:bg-[#F2F0E9] text-[#101010] font-grotesk font-semibold text-sm sm:text-base tracking-wider uppercase rounded-xs transition-all duration-200 cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed shadow-[0_10px_30px_rgba(215,255,63,0.25)] hover:shadow-[0_10px_35px_rgba(242,240,233,0.3)] active:translate-y-0.5"
+              >
+                {status === "submitting" ? (
+                  <>
+                    <Loader2 className="w-5 h-5 animate-spin text-[#101010]" />
+                    <span>Sending Brief...</span>
+                  </>
+                ) : (
+                  <>
+                    <span>Submit Project Brief</span>
+                    <Send className="w-4 h-4 text-[#101010] group-hover:translate-x-1 group-hover:-translate-y-0.5 transition-transform" />
+                  </>
+                )}
+              </button>
 
-                <span className="font-grotesk text-[11px] text-[#77776F] tracking-wide text-right">
-                  Zero spam · Confidential inquiry
-                </span>
+              <div className="flex flex-col sm:items-end text-sm font-grotesk text-[#A8A7A1] space-y-1">
+                <span className="text-[#F2F0E9] font-medium">Direct review by studio directors</span>
+                <span>Response within 24–48 hours · Strictly confidential</span>
               </div>
             </div>
-          </div>
-        </form>
+          </form>
+        </div>
       )}
     </div>
   );

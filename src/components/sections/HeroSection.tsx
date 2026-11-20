@@ -1,95 +1,124 @@
 "use client";
 
-import React from "react";
-import Image from "next/image";
-import { OffgridSymbol } from "../visuals/OffgridSymbol";
+import React, { useEffect, useRef } from "react";
 import { ArrowUpRight, ArrowDownRight } from "lucide-react";
+import { BackgroundVideo } from "@/components/ui/BackgroundVideo";
+import { KineticMarquee } from "@/components/hero/KineticMarquee";
+import { MorphingWord } from "@/components/hero/MorphingWord";
+import { StudioMockup } from "@/components/hero/StudioMockup";
+import gsap from "gsap";
 
 export function HeroSection() {
+  const containerRef = useRef<HTMLElement>(null);
+  const headlineRef = useRef<HTMLHeadingElement>(null);
+
+  useEffect(() => {
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (prefersReducedMotion) return;
+
+    const ctx = gsap.context(() => {
+      // 1. Initial Line Masked Reveals
+      gsap.from(".hero-kinetic-line", {
+        y: "115%",
+        skewY: 5,
+        opacity: 0,
+        duration: 1.2,
+        stagger: 0.14,
+        ease: "power4.out",
+        delay: 0.15,
+      });
+
+      // 2. Narrative, CTAs & Studio Mockup Fade In
+      gsap.from(".hero-fade-item", {
+        y: 25,
+        opacity: 0,
+        duration: 1.0,
+        stagger: 0.12,
+        ease: "power3.out",
+        delay: 0.5,
+      });
+    }, containerRef);
+
+    return () => ctx.revert();
+  }, []);
+
   return (
-    <section className="relative w-full min-h-[calc(100vh-5rem)] sm:min-h-[calc(100vh-6rem)] bg-[#101010] text-[#F2F0E9] flex flex-col justify-between overflow-hidden border-b border-[#292929]">
-      <div className="relative z-10 max-w-[1440px] mx-auto px-6 sm:px-8 lg:px-12 w-full pt-8 sm:pt-12 lg:pt-14 pb-12 sm:pb-16 flex-1 flex flex-col justify-between">
-        {/* Top Editorial Studio Ledger */}
+    <section
+      id="hero"
+      ref={containerRef}
+      className="relative w-full min-h-screen bg-[#101010] text-[#F2F0E9] flex flex-col justify-between overflow-hidden border-b border-[#292929] z-10"
+    >
+      {/* Real Architectural Ambient Video Loop */}
+      <BackgroundVideo
+        srcMp4="/videos/hero-ambient-loop.mp4"
+        poster="/images/backgrounds/hero-ambient-poster.webp"
+        opacity="opacity-50"
+        scrimClassName="bg-gradient-to-b from-[#101010]/85 via-[#101010]/40 to-[#101010]"
+      />
 
-        {/* 12-Column Asymmetric Composition */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-8 items-center my-auto">
-          {/* Left Column: Monumental Headline & Narrative (Span 7) */}
-          <div className="lg:col-span-7 space-y-6 sm:space-y-8">
-            {/* Oversized Bebas Neue Headline */}
-            <h1 className="font-bebas text-6xl sm:text-8xl md:text-9xl xl:text-[140px] tracking-[0.015em] leading-[0.88] text-[#F2F0E9] uppercase select-none">
-              IDEAS <br />
-              WITHOUT THE <br />
-              ORDINARY<span className="text-[#D7FF3F]">.</span>
-            </h1>
-
-            {/* Supporting Description */}
-            <p className="font-grotesk text-base sm:text-xl text-[#F2F0E9] max-w-xl font-normal leading-relaxed">
-              We build brands, products, and digital experiences for people who refuse to blend in.
-            </p>
-
-            {/* Primary & Secondary Action CTAs */}
-            <div className="pt-2 sm:pt-4 flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
-              <a
-                href="#contact"
-                className="group inline-flex items-center justify-center gap-3 px-8 py-4 bg-[#D7FF3F] text-[#101010] font-grotesk font-semibold text-xs sm:text-sm tracking-wider rounded-xs hover:bg-[#F2F0E9] transition-colors duration-200 shadow-md"
-              >
-                <span>Start a project</span>
-                <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-              </a>
-
-              <a
-                href="#work"
-                className="group inline-flex items-center justify-center gap-3 px-7 py-4 border border-[#292929] hover:border-[#D7FF3F] bg-[#101010] text-[#F2F0E9] hover:text-[#D7FF3F] font-grotesk font-medium text-xs sm:text-sm tracking-wider rounded-xs transition-colors"
-              >
-                <span>Explore our work</span>
-                <ArrowDownRight className="w-4 h-4 text-[#77776F] group-hover:text-[#D7FF3F] group-hover:translate-x-0.5 group-hover:translate-y-0.5 transition-transform" />
-              </a>
-            </div>
-          </div>
-
-          {/* Right Column: Architectural Photography & Signature Symbol (Span 5) */}
-          <div className="lg:col-span-5 relative w-full flex justify-center lg:justify-end">
-            <div className="relative w-full max-w-[420px] sm:max-w-[460px]">
-              {/* Asymmetrical Framed Container */}
-              <div className="relative aspect-[4/5] w-full overflow-hidden rounded-xs border border-[#292929] bg-[#1a1a1a] shadow-2xl">
-                {/* High-Resolution Primary Hero Image */}
-                <Image
-                  src="/images/hero/hero-monolith.webp"
-                  alt="Sculptural architectural monolith"
-                  fill
-                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 45vw, 460px"
-                  className="object-cover grayscale contrast-125 brightness-95 hover:scale-105 transition-transform duration-1000 ease-out"
-                />
-
-                {/* Subtle bottom vignette for tonal balance */}
-                <div className="absolute inset-0 bg-gradient-to-t from-[#101010] via-transparent to-transparent opacity-50 pointer-events-none" />
-              </div>
-
-              {/* Overlapping Signature OFFGRID® Electric Lime Symbol */}
-              <div className="absolute -bottom-7 -left-7 sm:-bottom-9 sm:-left-9 z-30 drop-shadow-[0_20px_40px_rgba(0,0,0,0.9)]">
-                <OffgridSymbol size={130} />
-              </div>
-            </div>
-          </div>
+      {/* Main Centered Stage */}
+      <div className="relative z-10 max-w-[1440px] mx-auto px-6 sm:px-8 lg:px-12 w-full pt-32 sm:pt-40 lg:pt-44 pb-14 flex-1 flex flex-col items-center justify-center text-center">
+        {/* Top Centered Studio Ledger Badge */}
+        <div className="hero-fade-item inline-flex items-center gap-3 px-4 py-1.5 rounded-full border border-[#292929] bg-[#141414]/80 backdrop-blur-md mb-8 font-grotesk text-xs sm:text-[13px] text-[#A8A7A1]">
+          <span className="w-2 h-2 rounded-full bg-[#D7FF3F] animate-pulse" />
+          <span className="text-[#F2F0E9] font-medium">Independent Creative & Digital Studio</span>
+          <span className="text-[#292929]">•</span>
+          <span className="text-[#77776F] hidden sm:inline">Chennai — Worldwide</span>
         </div>
 
-        {/* Bottom Bar: Clean Studio Colophon & Animated Scroll Indicator */}
-        <div className="mt-12 sm:mt-16 pt-6 border-t border-[#292929] flex flex-col sm:flex-row items-center justify-between gap-6 font-grotesk text-xs text-[#77776F]">
-          <div className="flex flex-wrap items-center gap-6">
-            <span>Offgrid Studio</span>
-            <span className="hidden sm:inline text-[#292929]">•</span>
-            <span className="text-[#F2F0E9]">All rights reserved © 2026</span>
+        {/* Centered Monumental Kinetic Headline */}
+        <h1
+          ref={headlineRef}
+          className="font-bebas text-[48px] xs:text-[60px] sm:text-[78px] md:text-[96px] lg:text-[112px] xl:text-[128px] tracking-tight leading-[0.88] text-[#F2F0E9] uppercase select-none will-change-transform max-w-7xl mx-auto"
+          aria-label="IDEAS BEYOND THE ORDINARY"
+        >
+          <div className="overflow-hidden py-1">
+            <span className="hero-kinetic-line block will-change-transform">
+              IDEAS BEYOND
+            </span>
           </div>
+          <div className="overflow-hidden py-1 flex justify-center items-baseline flex-nowrap whitespace-nowrap">
+            <span className="hero-kinetic-line inline-block will-change-transform mr-[0.3em] sm:mr-[0.35em]">
+              THE
+            </span>
+            <span className="hero-kinetic-line inline-block will-change-transform">
+              <MorphingWord />
+            </span>
+          </div>
+        </h1>
 
-          {/* Minimalist Animated Scroll Indicator */}
-          <div className="flex items-center gap-3 text-xs tracking-wide text-[#77776F]">
-            <span>Scroll to explore</span>
-            <div className="relative w-4 h-9 border border-[#292929] rounded-full flex justify-center p-1 overflow-hidden">
-              <span className="w-1 h-2 rounded-full bg-[#D7FF3F] animate-scroll-pulse" />
-            </div>
-          </div>
+        {/* Centered Narrative Description */}
+        <p className="hero-fade-item font-grotesk text-base sm:text-xl text-[#F2F0E9] font-light leading-relaxed max-w-2xl mx-auto mt-6 sm:mt-8">
+          We build distinctive brands, products, and digital experiences for visionary founders and teams who refuse to blend in.
+        </p>
+
+        {/* Centered Action CTAs */}
+        <div className="hero-fade-item pt-8 flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-4 w-full sm:w-auto">
+          <a
+            href="#contact"
+            className="group inline-flex items-center justify-center gap-3 px-9 py-4 bg-[#D7FF3F] text-[#101010] font-grotesk font-semibold text-xs sm:text-sm tracking-wider rounded-xs hover:bg-[#F2F0E9] transition-colors duration-200 shadow-md"
+          >
+            <span>Start a project</span>
+            <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+          </a>
+
+          <a
+            href="#work"
+            className="group inline-flex items-center justify-center gap-3 px-8 py-4 border border-[#292929] hover:border-[#D7FF3F] bg-[#101010]/80 text-[#F2F0E9] hover:text-[#D7FF3F] font-grotesk font-medium text-xs sm:text-sm tracking-wider rounded-xs transition-colors duration-200"
+          >
+            <span>Explore our work</span>
+            <ArrowDownRight className="w-4 h-4 text-[#77776F] group-hover:text-[#D7FF3F] group-hover:translate-x-0.5 group-hover:translate-y-0.5 transition-transform" />
+          </a>
+        </div>
+
+        {/* Centered Digital Studio Device Mockup Showcase */}
+        <div className="hero-fade-item w-full">
+          <StudioMockup />
         </div>
       </div>
+
+      {/* Integrated Continuous Typographic Ribbon */}
+      <KineticMarquee />
     </section>
   );
 }

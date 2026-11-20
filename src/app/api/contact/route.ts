@@ -20,6 +20,9 @@ function checkRateLimit(ip: string): boolean {
   return true;
 }
 
+const FORMSPREE_ENDPOINT =
+  process.env.FORMSPREE_ENDPOINT || "https://formspree.io/f/xljbwrkd";
+
 export async function POST(req: NextRequest) {
   try {
     // 1. IP identification & Rate Limiting
@@ -69,82 +72,59 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const { name, email, projectType, message } = body;
-    const resendApiKey = process.env.RESEND_API_KEY;
-    const contactEmail = process.env.CONTACT_EMAIL || "hello@offgrid.studio";
+    const { name, email, projectType, budget, message } = body;
 
-    // 5. Dispatch or Development Mode
-    if (resendApiKey) {
-      try {
-        const resendResponse = await fetch("https://api.resend.com/emails", {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${resendApiKey}`,
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            from: "OFFGRID Studio <inquiry@offgrid.studio>",
-            to: [contactEmail],
-            reply_to: email,
-            subject: `[OFFGRID INQUIRY] ${name} — ${projectType || "General"}`,
-            html: `
-              <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #101010; color: #F2F0E9; padding: 40px; border-radius: 4px;">
-                <h1 style="color: #D7FF3F; font-size: 24px; margin-bottom: 24px; text-transform: uppercase; letter-spacing: 1px;">New Client Inquiry</h1>
-                <p><strong>Name:</strong> ${name}</p>
-                <p><strong>Email:</strong> ${email}</p>
-                <p><strong>Discipline / Project Type:</strong> ${projectType || "Not specified"}</p>
-                <div style="margin-top: 24px; padding: 20px; background: #1c1c1c; border-left: 3px solid #D7FF3F;">
-                  <h3 style="margin-top: 0; color: #77776F; font-size: 12px; text-transform: uppercase;">Message:</h3>
-                  <p style="white-space: pre-wrap; line-height: 1.6;">${message}</p>
-                </div>
-                <p style="margin-top: 32px; font-size: 11px; color: #77776F;">Dispatched via OFFGRID® Web Platform · ${new Date().toISOString()}</p>
-              </div>
-            `,
-          }),
-        });
+    // 5. Dispatch to Formspree Endpoint
+    try {
+      const formspreeResponse = await fetch(FORMSPREE_ENDPOINT, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify({
+          name,
+          email,
+          projectType: projectType || "Not specified",
+          budget: budget || "Not specified",
+          message,
+          _subject: `[OFFGRID INQUIRY] ${name} — ${projectType || "General"}`,
+        }),
+      });
 
-        if (!resendResponse.ok) {
-          const errData = await resendResponse.json();
-          console.error("[OFFGRID API] Resend email delivery failed:", errData);
-          return NextResponse.json(
-            {
-              success: false,
-              error: "Unable to dispatch email through provider. Please contact us directly.",
-            },
-            { status: 502 }
-          );
-        }
+      const responseData = await formspreeResponse.json().catch(() => ({}));
 
+      if (!formspreeResponse.ok) {
+        console.error("[OFFGRID API] Formspree delivery failed:", responseData);
         return NextResponse.json(
           {
-            success: true,
-            delivered: true,
-            message: "Thank you. Your message was dispatched. We'll get back to you promptly.",
+            success: false,
+            error:
+              responseData.error ||
+              "Unable to dispatch inquiry through Formspree. Please try again or reach out via email.",
           },
-          { status: 200 }
-        );
-      } catch (err) {
-        console.error("[OFFGRID API] Network error connecting to Resend:", err);
-        return NextResponse.json(
-          { success: false, error: "Network error transmitting inquiry." },
-          { status: 500 }
+          { status: formspreeResponse.status || 502 }
         );
       }
-    } else {
-      // Resend API key is not configured — log clearly for local/preview environments
-      console.info(
-        `[OFFGRID API / DEV INQUIRY RECEIVED]\nName: ${name}\nEmail: ${email}\nType: ${projectType || "General"}\nMessage: ${message}`
-      );
 
       return NextResponse.json(
         {
           success: true,
-          delivered: false,
-          mode: "development",
+          delivered: true,
           message:
-            "Thank you. Your inquiry has been received (Development mode: RESEND_API_KEY environment variable not configured).",
+            "Thank you. Your project brief has been successfully received. We will review it and get back to you shortly.",
         },
         { status: 200 }
+      );
+    } catch (err) {
+      console.error("[OFFGRID API] Network error connecting to Formspree:", err);
+      return NextResponse.json(
+        {
+          success: false,
+          error:
+            "A network error occurred while connecting to the dispatch service. Please check your connection and retry.",
+        },
+        { status: 500 }
       );
     }
   } catch (error) {

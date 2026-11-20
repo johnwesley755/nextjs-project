@@ -12,7 +12,7 @@ interface ProjectCardProps {
 export function ProjectCard({ project }: ProjectCardProps) {
   return (
     <article
-      className={`${project.colSpanDesktop} col-span-12 group relative flex flex-col justify-between space-y-5`}
+      className={`w-full ${project.colSpanDesktop} group relative flex flex-col justify-between space-y-5`}
     >
       {/* Visual Image Presentation */}
       <ProjectImage

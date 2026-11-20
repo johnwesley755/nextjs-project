@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import Image from "next/image";
 import { SERVICES_DATA, SERVICES_SECTION_HEADER } from "@/data/services";
 import { ServiceRow } from "../services/ServiceRow";
 
@@ -8,8 +9,19 @@ export function ServicesSection() {
   return (
     <section
       id="services"
-      className="relative w-full bg-[#F2F0E9] text-[#101010] py-20 sm:py-28 lg:py-36 overflow-hidden border-b border-[#292929]/20"
+      className="relative w-full bg-[#F2F0E9] text-[#101010] py-20 sm:py-28 lg:py-36 overflow-hidden border-b border-[#292929]/20 z-20 shadow-[0_-35px_100px_rgba(0,0,0,0.92)] will-change-transform"
     >
+      {/* Ambient Architectural Texture Overlay */}
+      <div className="absolute inset-0 pointer-events-none select-none overflow-hidden -z-0 opacity-[0.06] mix-blend-multiply" aria-hidden="true">
+        <Image
+          src="/images/backgrounds/services-architectural-bg.webp"
+          alt=""
+          fill
+          sizes="100vw"
+          className="object-cover"
+        />
+      </div>
+
       {/* Scroll-Triggered Section Entrance Transition Line */}
       <div
         id="services-transition-divider"

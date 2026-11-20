@@ -14,6 +14,7 @@ export function PageTransitions() {
     let mm: gsap.MatchMedia | null = null;
 
     const rafId = requestAnimationFrame(() => {
+      const heroSection = document.getElementById("hero");
       const servicesSection = document.getElementById("services");
       const portfolioSection = document.getElementById("work");
       const contactSection = document.getElementById("contact");
@@ -58,8 +59,24 @@ export function PageTransitions() {
       mm.add("(prefers-reduced-motion: no-preference)", () => {
         ctx = gsap.context(() => {
           // ==========================================================
-          // TRANSITION 01: Hero -> Services Section Transition
+          // TRANSITION 01: Hero -> Services "Reveal from Behind" Parallax
           // ==========================================================
+          if (heroSection && servicesSection) {
+            // As user scrolls, Hero section content gently recedes back into the distance
+            gsap.to(heroSection, {
+              scale: 0.94,
+              opacity: 0.7,
+              yPercent: -10,
+              ease: "none",
+              scrollTrigger: {
+                trigger: servicesSection,
+                start: "top bottom",
+                end: "top top",
+                scrub: 0.6,
+              },
+            });
+          }
+
           const servicesDivider = document.getElementById("services-transition-divider");
           if (servicesDivider && servicesSection) {
             gsap.fromTo(
