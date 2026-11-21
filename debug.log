@@ -376,3 +376,28 @@
 [1120/200742.351:WARNING:net\dns\dns_config_service_win.cc:609] Failed to read DnsConfig.
 [1120/200815.063:WARNING:net\dns\dns_config_service_win.cc:609] Failed to read DnsConfig.
 [1120/200820.088:WARNING:net\dns\dns_config_service_win.cc:609] Failed to read DnsConfig.
+[1120/212120.338:WARNING:net\dns\dns_config_service_win.cc:609] Failed to read DnsConfig.
+[1120/212125.349:WARNING:net\dns\dns_config_service_win.cc:609] Failed to read DnsConfig.
+[1120/212145.348:WARNING:net\dns\dns_config_service_win.cc:609] Failed to read DnsConfig.
+[1120/212150.355:WARNING:net\dns\dns_config_service_win.cc:609] Failed to read DnsConfig.
+[1120/212625.475:WARNING:net\dns\dns_config_service_win.cc:609] Failed to read DnsConfig.
+[1120/212627.176:ERROR:cc\raster\one_copy_raster_buffer_provider.cc:282] Creation of StagingBuffer's SharedImage failed.
+[1120/212627.176:ERROR:cc\raster\one_copy_raster_buffer_provider.cc:282] Creation of StagingBuffer's SharedImage failed.
+[1120/212627.176:ERROR:cc\raster\one_copy_raster_buffer_provider.cc:282] Creation of StagingBuffer's SharedImage failed.
+[1120/212627.176:ERROR:cc\raster\one_copy_raster_buffer_provider.cc:282] Creation of StagingBuffer's SharedImage failed.
+[1120/212627.176:ERROR:cc\raster\one_copy_raster_buffer_provider.cc:282] Creation of StagingBuffer's SharedImage failed.
+[1120/212627.176:ERROR:cc\raster\one_copy_raster_buffer_provider.cc:282] Creation of StagingBuffer's SharedImage failed.
+[1120/212627.176:ERROR:cc\raster\one_copy_raster_buffer_provider.cc:282] Creation of StagingBuffer's SharedImage failed.
+[1120/212627.178:ERROR:cc\raster\one_copy_raster_buffer_provider.cc:282] Creation of StagingBuffer's SharedImage failed.
+[1120/212627.178:ERROR:cc\raster\one_copy_raster_buffer_provider.cc:282] Creation of StagingBuffer's SharedImage failed.
+[1120/212627.178:ERROR:cc\raster\one_copy_raster_buffer_provider.cc:282] Creation of StagingBuffer's SharedImage failed.
+[1120/212627.178:ERROR:cc\raster\one_copy_raster_buffer_provider.cc:282] Creation of StagingBuffer's SharedImage failed.
+[1120/212627.178:ERROR:cc\raster\one_copy_raster_buffer_provider.cc:282] Creation of StagingBuffer's SharedImage failed.
+[1120/212627.178:ERROR:cc\raster\one_copy_raster_buffer_provider.cc:282] Creation of StagingBuffer's SharedImage failed.
+[1120/212627.178:ERROR:cc\raster\one_copy_raster_buffer_provider.cc:282] Creation of StagingBuffer's SharedImage failed.
+[1120/212627.178:ERROR:cc\raster\one_copy_raster_buffer_provider.cc:282] Creation of StagingBuffer's SharedImage failed.
+[1120/212627.178:ERROR:cc\raster\one_copy_raster_buffer_provider.cc:282] Creation of StagingBuffer's SharedImage failed.
+[1120/212627.178:ERROR:cc\raster\one_copy_raster_buffer_provider.cc:282] Creation of StagingBuffer's SharedImage failed.
+[1120/212630.485:WARNING:net\dns\dns_config_service_win.cc:609] Failed to read DnsConfig.
+[1120/212644.204:WARNING:net\dns\dns_config_service_win.cc:609] Failed to read DnsConfig.
+[1120/212649.220:WARNING:net\dns\dns_config_service_win.cc:609] Failed to read DnsConfig.
